@@ -434,7 +434,7 @@ else:
 
         st.subheader("Extracted Fields")
         texts = pipeline.load_texts(json_path)
-        fields = pipeline.extract_fields(texts)
+        fields = pipeline.extract_fields_v2(texts)
         username = fields.get("Username", "")
         username_digit_count = sum(c.isdigit() for c in username)
         st.dataframe(pd.DataFrame([fields]))
@@ -523,4 +523,5 @@ st.markdown("""
     <p>© 2025 Instagram Fake Account Detector</p>
 </div>
 """, unsafe_allow_html=True)
+
 
