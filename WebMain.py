@@ -176,8 +176,7 @@ else:
         col1, col2 = st.columns(2)
 
         image = Image.open(BytesIO(uploaded_file.getvalue()))
-        col1.image(image, caption="Uploaded Screenshot", use_container_width=True)
-
+        col1.image(image, caption="Uploaded Screenshot", use_column_width=True)
         with st.spinner("Running OCR..."):
             ocr = get_ocr()
             result = ocr.predict(img_path)
@@ -230,3 +229,4 @@ st.markdown("""
     <p>Built with Streamlit | © 2025 Instagram Fake Account Detector</p>
 </div>
 """, unsafe_allow_html=True)
+
