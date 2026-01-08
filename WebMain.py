@@ -1,4 +1,5 @@
 import streamlit as st
+st.set_page_config(page_title="Instagram Fake Detector", layout="wide")
 import pandas as pd
 import numpy as np
 import os
@@ -39,10 +40,6 @@ st.markdown(f"""
     <img src='data:image/png;base64,{logo_base64}' alt="Logo Mercu">
 </div>
 """, unsafe_allow_html=True)
-
-
-# ====================== PAGE CONFIG ======================
-st.set_page_config(page_title="Instagram Fake Detector", layout="wide")
 
 # ====================== STYLE ======================
 st.markdown("""
@@ -423,4 +420,5 @@ st.markdown("""
 <div class="footer">
     <p>Built with Streamlit | © 2025 Instagram Fake Account Detector</p>
 </div>
+
 """, unsafe_allow_html=True)
