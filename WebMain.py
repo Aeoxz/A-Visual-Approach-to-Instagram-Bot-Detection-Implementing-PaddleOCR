@@ -25,7 +25,7 @@ def get_base64_image(image_path):
         return base64.b64encode(img_file.read()).decode()
 
 
-# Convert logo ke base64
+# ====================== LOGO ======================
 logo_base64 = get_base64_image("assets/logomercu.png")
 
 st.markdown(f"""
@@ -33,17 +33,14 @@ st.markdown(f"""
 .logo-container {{
     display: flex;
     justify-content: center;
-    align-items: flex-start;
     margin-top: -70px;
 }}
-
 .logo-container img {{
     max-width: 120px;
 }}
 </style>
-
 <div class="logo-container">
-    <img src='data:image/png;base64,{logo_base64}' alt="Logo Mercu">
+    <img src='data:image/png;base64,{logo_base64}'>
 </div>
 """, unsafe_allow_html=True)
 
@@ -51,54 +48,29 @@ st.markdown(f"""
 st.markdown("""
 <style>
 html { scroll-behavior: smooth; }
-
 .stAppHeader { display: none; }
 
-.st-emotion-cache-zy6yx3 {
-    width: 100%;
-    padding: 6rem 1rem 3rem;
-    max-width: initial;
-}
-
 .hero {
-    background: linear-gradient(90deg, #fcb045 0%, #fd1d1d 50%, #833ab4 100%);
+    background: linear-gradient(90deg,#fcb045,#fd1d1d,#833ab4);
     padding: 80px 50px;
     border-radius: 22px;
     color: white;
     margin-bottom: 70px;
 }
-
 .hero h1 { font-size: 44px; font-weight: 700; }
-.hero-buttons { display: flex; gap: 16px; }
-
-.hero-buttons a {
-    text-decoration: none;
-    padding: 12px 28px;
-    border-radius: 10px;
-    font-weight: 600;
-}
-
-.btn-primary { background: #0f0f0f; color: white !important; }
-.btn-secondary { background: white; color: black !important; }
 
 .section { padding-top: 80px; margin-top: -80px; }
-
-.soft-divider {
-    height: 1px;
-    margin: 90px 0 70px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
-}
+.soft-divider { height: 1px; margin: 80px 0; background: rgba(255,255,255,0.2); }
 
 .about {
-    background: rgba(14,17,23,1);
+    background: #0e1117;
     padding: 60px;
     border-radius: 22px;
     border: 1px solid rgba(255,255,255,0.08);
 }
-
 .creator-item {
-    padding: 8px 12px;
     background: rgba(255,255,255,0.05);
+    padding: 8px 12px;
     border-radius: 8px;
 }
 </style>
@@ -108,10 +80,7 @@ html { scroll-behavior: smooth; }
 st.markdown("""
 <div class="hero">
     <h1>Instagram Fake Account Detector</h1>
-    <div class="hero-buttons">
-        <a href="#upload" class="btn-primary">Get Started</a>
-        <a href="#about" class="btn-secondary">About Us</a>
-    </div>
+    <a href="#upload">Get Started</a>
 </div>
 """, unsafe_allow_html=True)
 
@@ -125,11 +94,12 @@ LABELMAP_PATH = os.path.join(MODEL_DIR, "label_mapping.pkl")
 
 @st.cache_resource
 def load_models():
-    rf_model = joblib.load(RF_PATH)
-    xgb_model = joblib.load(XGB_PATH)
-    scaler = joblib.load(SCALER_PATH)
-    label_map = joblib.load(LABELMAP_PATH)
-    return rf_model, xgb_model, scaler, label_map
+    return (
+        joblib.load(RF_PATH),
+        joblib.load(XGB_PATH),
+        joblib.load(SCALER_PATH),
+        joblib.load(LABELMAP_PATH),
+    )
 
 
 rf, xgb, scaler, label_map = load_models()
@@ -177,6 +147,7 @@ else:
 
         image = Image.open(BytesIO(uploaded_file.getvalue()))
         col1.image(image, caption="Uploaded Screenshot", use_column_width=True)
+
         with st.spinner("Running OCR..."):
             ocr = get_ocr()
             result = ocr.predict(img_path)
@@ -189,21 +160,24 @@ else:
 
         img_out_files = [
             f for f in os.listdir(temp_dir)
-            if f.endswith((".jpg", ".jpeg", ".png")) and f != uploaded_file.name
+            if f.lower().endswith((".jpg", ".jpeg", ".png"))
+            and f != uploaded_file.name
         ]
+
         if img_out_files:
-            col2.image(os.path.join(temp_dir, img_out_files[0]), caption="OCR Result", use_column_width=True)
+            col2.image(
+                os.path.join(temp_dir, img_out_files[0]),
+                caption="OCR Result",
+                use_column_width=True
+            )
+
         st.subheader("Extracted Fields")
         texts = pipeline.load_texts(json_path)
         fields = pipeline.extract_fields_v2(texts)
-
-        username = fields.get("Username", "")
-        username_digit_count = sum(c.isdigit() for c in username)
-
         st.dataframe(pd.DataFrame([fields]))
 
         feature_row = pd.DataFrame([{
-            "usernameDigitCount": username_digit_count,
+            "usernameDigitCount": sum(c.isdigit() for c in fields.get("Username", "")),
             "userMediaCount": convert_to_number(fields.get("Posts", "0")),
             "userFollowerCount": convert_to_number(fields.get("Followers", "0")),
             "userFollowingCount": convert_to_number(fields.get("Following", "0")),
@@ -224,9 +198,7 @@ else:
 
 # ====================== FOOTER ======================
 st.markdown("""
-<div class="footer">
-    <p>Built with Streamlit | © 2025 Instagram Fake Account Detector</p>
+<div style="text-align:center; color:#9ca3af; margin-top:40px;">
+    Built with Streamlit | © 2025 Instagram Fake Account Detector
 </div>
 """, unsafe_allow_html=True)
-
-
