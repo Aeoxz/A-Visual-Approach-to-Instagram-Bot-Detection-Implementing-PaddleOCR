@@ -305,6 +305,7 @@ col1.image(image, caption="Uploaded Screenshot", use_container_width=True)
 
 
 
+
         with st.spinner("Running OCR..."):
             ocr = get_ocr()
             result = ocr.predict(img_path)
@@ -425,5 +426,6 @@ st.markdown("""
 </div>
 
 """, unsafe_allow_html=True)
+
 
 
