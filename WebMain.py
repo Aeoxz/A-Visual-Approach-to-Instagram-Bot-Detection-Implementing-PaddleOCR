@@ -379,8 +379,8 @@ rf, xgb, scaler, label_map = load_models()
 @st.cache_resource
 def get_ocr():
     return PaddleOCR(
-text_detection_model_name="PP-OCRv5_server_det",  
-    text_recognition_model_name="PP-OCRv5_server_rec",  
+text_detection_model_name="PP-OCRv5_mobile_det",  
+    text_recognition_model_name="PP-OCRv5_mobile_rec",  
     )
 
 def convert_to_number(text):
@@ -522,6 +522,7 @@ st.markdown("""
     <p>© 2025 Instagram Fake Account Detector</p>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
