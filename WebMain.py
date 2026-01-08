@@ -381,9 +381,7 @@ def get_ocr():
     return PaddleOCR(
 use_angle_cls=True,
     lang="en",
-    use_gpu=False,
-    enable_mkldnn=True,  
-    show_log=False       
+    use_gpu=False,     
     )
 
 def convert_to_number(text):
@@ -525,6 +523,7 @@ st.markdown("""
     <p>© 2025 Instagram Fake Account Detector</p>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
