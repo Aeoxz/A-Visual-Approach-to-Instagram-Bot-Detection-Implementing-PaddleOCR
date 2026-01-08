@@ -192,8 +192,7 @@ else:
             if f.endswith((".jpg", ".jpeg", ".png")) and f != uploaded_file.name
         ]
         if img_out_files:
-            col2.image(os.path.join(temp_dir, img_out_files[0]), caption="OCR Result", use_container_width=True)
-
+            col2.image(os.path.join(temp_dir, img_out_files[0]), caption="OCR Result", use_column_width=True)
         st.subheader("Extracted Fields")
         texts = pipeline.load_texts(json_path)
         fields = pipeline.extract_fields_v2(texts)
@@ -229,4 +228,5 @@ st.markdown("""
     <p>Built with Streamlit | © 2025 Instagram Fake Account Detector</p>
 </div>
 """, unsafe_allow_html=True)
+
 
