@@ -300,7 +300,9 @@ else:
             f.write(uploaded_file.getbuffer())
 
         col1, col2 = st.columns(2)
-        col1.image(uploaded_file.getvalue(), caption="Uploaded Screenshot", use_container_width=True)
+        image = Image.open(BytesIO(uploaded_file.getvalue()))
+col1.image(image, caption="Uploaded Screenshot", use_container_width=True)
+
 
 
         with st.spinner("Running OCR..."):
@@ -423,4 +425,5 @@ st.markdown("""
 </div>
 
 """, unsafe_allow_html=True)
+
 
