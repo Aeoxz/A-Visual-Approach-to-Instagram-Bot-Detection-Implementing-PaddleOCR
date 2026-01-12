@@ -3,15 +3,15 @@ import pandas as pd
 import re
 import os
 
-# =============================
+
 # Config
-# =============================
+
 json_folder = r"F:\AA FILE MERCU AZKA\Capstone project\Capstone_Project\Output Dataset bu afi"
 output_csv = "instagram_accounts_Bu_Afi.csv"
 
-# =============================
+
 # Utility Functions
-# =============================
+
 def load_texts(path):
     with open(path, "r", encoding="utf-8") as f:
         data = json.load(f)
@@ -24,9 +24,9 @@ def is_timestamp(text):
 def is_stat_label(text):
     return text.lower().strip() in ["posts", "followers", "following", "postingan", "pengikut", "mengikuti"]
 
-# =============================
+
 # Core Extraction Logic
-# =============================
+
 def extract_fields_v2(texts):
     # Bersihkan list
     texts = [t.strip() for t in texts if t and isinstance(t, str)]
@@ -68,9 +68,9 @@ def extract_fields_v2(texts):
     if len(nums) >= 3:
         fields["Posts"], fields["Followers"], fields["Following"] = nums[:3]
 
-    # =========================================
+  
     # 4. EKSTRAKSI BIO (UPDATED UNTUK INDO)
-    # =========================================
+ 
     raw_bio_lines = texts[last_stat_idx + 1:]
     clean_bio = []
     
@@ -106,9 +106,9 @@ def extract_fields_v2(texts):
     fields["Bio"] = " ".join(clean_bio).strip()
 
     return fields
-# =============================
+
 # Process ALL JSON files
-# =============================
+
 def process_all_json(json_folder, out_csv):
     rows = []
     
@@ -119,7 +119,7 @@ def process_all_json(json_folder, out_csv):
     for file in os.listdir(json_folder):
         if file.lower().endswith(".json"):
             full_path = os.path.join(json_folder, file)
-            # print("Processing JSON:", file) # Uncomment for debug
+            
 
             try:
                 texts = load_texts(full_path)
@@ -142,8 +142,9 @@ def process_all_json(json_folder, out_csv):
     print(df.head(10))
     return df
 
-# =============================
+
 # MAIN
-# =============================
+
 if __name__ == "__main__":
+
     process_all_json(json_folder, output_csv)
